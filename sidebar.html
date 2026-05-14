@@ -46,29 +46,52 @@
         display: flex; 
         justify-content: space-between; 
         align-items: center; 
-        margin-bottom: 12px; 
+        margin-bottom: 10px; 
       }
       .row:last-child {
         margin-bottom: 0;
+      }
+
+      .controls {
+        display: flex;
+        gap: 6px;
+        align-items: center;
       }
 
       label { 
         font-size: 13px; 
         font-weight: 500;
         color: var(--text-secondary);
+        width: 85px;
+        flex-shrink: 0;
       }
 
       input[type="number"] { 
-        width: 60px; 
-        padding: 8px 12px; 
+        width: 50px; 
+        padding: 6px 8px; 
         border: 1px solid var(--border);
         border-radius: 6px;
         font-family: inherit;
-        font-size: 14px;
+        font-size: 13px;
         transition: border-color 0.2s, box-shadow 0.2s;
         text-align: center;
       }
       
+      input[type="color"] {
+        width: 26px;
+        height: 28px;
+        padding: 0;
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        cursor: pointer;
+        background: white;
+      }
+      
+      input[type="color"]:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+      }
+
       input[type="number"]:focus, select.select-style:focus {
         outline: none;
         border-color: var(--border-focus);
@@ -76,7 +99,7 @@
       }
 
       select.select-style {
-        width: 140px;
+        width: 130px;
         padding: 8px;
         border: 1px solid var(--border);
         border-radius: 6px;
@@ -85,6 +108,14 @@
         transition: border-color 0.2s, box-shadow 0.2s;
         background-color: white;
         cursor: pointer;
+      }
+
+      .checkbox-color {
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        accent-color: var(--primary);
+        margin: 0;
       }
 
       .checkbox-row {
@@ -212,8 +243,6 @@
       <div class="overlay-spinner"></div>
     </div>
 
-    <!-- H3 retiré pour éviter le doublon avec le titre natif du panneau -->
-
     <div class="card">
       <div class="card-title">Options globales</div>
       
@@ -299,16 +328,83 @@
     </div>
 
     <div class="card">
-      <div class="card-title">Tailles des textes</div>
-      <div class="row"><label>Titre</label><input id="TITLE" type="number" min="6" max="96" value="28"></div>
-      <div class="row"><label>Sous-titre</label><input id="SUBTITLE" type="number" min="6" max="96" value="16"></div>
-      <div class="row"><label>Titre 1</label><input id="HEADING1" type="number" min="6" max="96" value="20"></div>
-      <div class="row"><label>Titre 2</label><input id="HEADING2" type="number" min="6" max="96" value="16"></div>
-      <div class="row"><label>Titre 3</label><input id="HEADING3" type="number" min="6" max="96" value="14"></div>
-      <div class="row"><label>Titre 4</label><input id="HEADING4" type="number" min="6" max="96" value="13"></div>
-      <div class="row"><label>Titre 5</label><input id="HEADING5" type="number" min="6" max="96" value="12"></div>
-      <div class="row"><label>Titre 6</label><input id="HEADING6" type="number" min="6" max="96" value="12"></div>
-      <div class="row"><label>Texte normal</label><input id="NORMAL" type="number" min="6" max="96" value="12"></div>
+      <div class="card-title" style="display: flex; justify-content: space-between;">
+        <span>Styles</span>
+        <span style="font-size: 11px; font-weight: normal; color: var(--text-secondary); text-transform: none;">Taille &amp; Couleur</span>
+      </div>
+      
+      <div class="row">
+        <label>Titre</label>
+        <div class="controls">
+          <input id="TITLE" type="number" min="6" max="96" value="28">
+          <input type="checkbox" id="ACT_COLOR_TITLE" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_TITLE').disabled = !this.checked">
+          <input type="color" id="COLOR_TITLE" value="#000000" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Sous-titre</label>
+        <div class="controls">
+          <input id="SUBTITLE" type="number" min="6" max="96" value="16">
+          <input type="checkbox" id="ACT_COLOR_SUBTITLE" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_SUBTITLE').disabled = !this.checked">
+          <input type="color" id="COLOR_SUBTITLE" value="#666666" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 1</label>
+        <div class="controls">
+          <input id="HEADING1" type="number" min="6" max="96" value="20">
+          <input type="checkbox" id="ACT_COLOR_HEADING1" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING1').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING1" value="#000000" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 2</label>
+        <div class="controls">
+          <input id="HEADING2" type="number" min="6" max="96" value="16">
+          <input type="checkbox" id="ACT_COLOR_HEADING2" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING2').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING2" value="#000000" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 3</label>
+        <div class="controls">
+          <input id="HEADING3" type="number" min="6" max="96" value="14">
+          <input type="checkbox" id="ACT_COLOR_HEADING3" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING3').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING3" value="#434343" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 4</label>
+        <div class="controls">
+          <input id="HEADING4" type="number" min="6" max="96" value="13">
+          <input type="checkbox" id="ACT_COLOR_HEADING4" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING4').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING4" value="#666666" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 5</label>
+        <div class="controls">
+          <input id="HEADING5" type="number" min="6" max="96" value="12">
+          <input type="checkbox" id="ACT_COLOR_HEADING5" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING5').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING5" value="#666666" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Titre 6</label>
+        <div class="controls">
+          <input id="HEADING6" type="number" min="6" max="96" value="12">
+          <input type="checkbox" id="ACT_COLOR_HEADING6" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING6').disabled = !this.checked">
+          <input type="color" id="COLOR_HEADING6" value="#666666" disabled>
+        </div>
+      </div>
+      <div class="row">
+        <label>Texte normal</label>
+        <div class="controls">
+          <input id="NORMAL" type="number" min="6" max="96" value="12">
+          <input type="checkbox" id="ACT_COLOR_NORMAL" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_NORMAL').disabled = !this.checked">
+          <input type="color" id="COLOR_NORMAL" value="#000000" disabled>
+        </div>
+      </div>
     </div>
 
     <div class="actions">
@@ -320,7 +416,7 @@
     </div>
 
     <div class="note">
-      <strong>Astuce :</strong> Laisser une taille vide ignorera ce style. Choisir "-- Ne pas modifier --" gardera les polices et interlignes existants.
+      <strong>Astuce :</strong> Cochez la case à côté d'une couleur pour l'appliquer. Laisser une taille vide ou une case décochée préservera le formatage existant.
     </div>
 
     <div class="status-container">
@@ -333,6 +429,11 @@
         TITLE: 28, SUBTITLE: 16,
         HEADING1: 20, HEADING2: 16, HEADING3: 14, HEADING4: 13, HEADING5: 12, HEADING6: 12,
         NORMAL: 12
+      };
+      const couleursParDefaut = {
+        TITLE: "#000000", SUBTITLE: "#666666",
+        HEADING1: "#000000", HEADING2: "#000000", HEADING3: "#434343", HEADING4: "#666666", HEADING5: "#666666", HEADING6: "#666666",
+        NORMAL: "#000000"
       };
 
       // Au chargement, on essaie de récupérer les préférences
@@ -353,6 +454,15 @@
               if(preferences.lineSpacing) {
                 document.getElementById('lineSpacing').value = preferences.lineSpacing;
               }
+              if(preferences.couleursActives) {
+                clefs.forEach(clef => {
+                   if(preferences.couleursActives[clef]) {
+                     document.getElementById('ACT_COLOR_' + clef).checked = true;
+                     document.getElementById('COLOR_' + clef).disabled = false;
+                     document.getElementById('COLOR_' + clef).value = preferences.couleurs[clef];
+                   }
+                });
+              }
             }
           })
           .withFailureHandler(function() {
@@ -362,7 +472,12 @@
       };
 
       function definirValeursParDefaut() {
-        clefs.forEach(clef => document.getElementById(clef).value = valeursParDefaut[clef]);
+        clefs.forEach(clef => {
+            document.getElementById(clef).value = valeursParDefaut[clef];
+            document.getElementById('ACT_COLOR_' + clef).checked = false;
+            document.getElementById('COLOR_' + clef).disabled = true;
+            document.getElementById('COLOR_' + clef).value = couleursParDefaut[clef];
+        });
         document.getElementById("inclureEnTetesPieds").checked = false;
         document.getElementById("fontFamily").value = "";
         document.getElementById("lineSpacing").value = "";
@@ -371,7 +486,18 @@
 
       function appliquer() {
         const carte = {};
-        clefs.forEach(clef => carte[clef] = document.getElementById(clef).value ? Number(document.getElementById(clef).value) : "");
+        const carteCouleurs = {};
+        const couleursActives = {};
+
+        clefs.forEach(clef => {
+          carte[clef] = document.getElementById(clef).value ? Number(document.getElementById(clef).value) : "";
+          if (document.getElementById('ACT_COLOR_' + clef).checked) {
+             carteCouleurs[clef] = document.getElementById('COLOR_' + clef).value;
+             couleursActives[clef] = true;
+          } else {
+             couleursActives[clef] = false;
+          }
+        });
         
         const inclureEnTetesPieds = document.getElementById("inclureEnTetesPieds").checked;
         const fontFamily = document.getElementById("fontFamily").value;
@@ -383,7 +509,12 @@
           fontFamily: fontFamily,
           lineSpacing: lineSpacing
         };
-        const preferencesASauvegarder = { ...carte, ...optionsGlobales };
+        const preferencesASauvegarder = { 
+            ...carte, 
+            ...optionsGlobales,
+            couleurs: carteCouleurs,
+            couleursActives: couleursActives
+        };
 
         // Retour visuel
         const bouton = document.getElementById("btnAppliquer");
@@ -408,7 +539,7 @@
                 reinitialiserBouton();
                 definirStatut("❌ Erreur : " + (erreur && erreur.message ? erreur.message : erreur));
               })
-              .appliquerTaillesStyles(carte, optionsGlobales);
+              .appliquerTaillesStyles(carte, carteCouleurs, optionsGlobales);
           })
           .withFailureHandler(erreur => {
              reinitialiserBouton();

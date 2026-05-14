@@ -8,13 +8,13 @@
  * Ce script ajoute un menu personnalisé et un panneau latéral interactif (UI) 
  * permettant de redimensionner rapidement et uniformément toutes les polices 
  * d'un document Google Docs (Texte normal, Titre, Sous-titre, Titres 1 à 6).
- * Il permet également de modifier la police globale et l'interligne.
+ * Il permet également de modifier la police globale, la couleur et l'interligne.
  * 
  * Fonctionnalités principales :
  * - Panneau latéral moderne (Material Design) intégré au document.
  * - Sauvegarde automatique des préférences de l'utilisateur (PropertiesService).
  * - Application récursive sur le corps du document, les listes et les tableaux.
- * - Choix de la police de caractères et de l'interligne.
+ * - Choix de la police de caractères, des couleurs par style et de l'interligne.
  * - Option pour inclure/exclure les en-têtes et pieds de page.
  * 
  * Utilisation :
@@ -39,16 +39,17 @@ function afficherBarreLateraleAjustementStyles() {
 }
 
 function definirTexteNormal12Rapide() {
-    appliquerTaillesStyles({ NORMAL: 12 }, { inclureEnTetesPieds: false });
+    appliquerTaillesStyles({ NORMAL: 12 }, null, { inclureEnTetesPieds: false });
 }
 
 /**
- * Applique les tailles, polices et interlignes dans tout le document.
+ * Applique les tailles, polices, couleurs et interlignes dans tout le document.
  *
  * @param {Object} carteTailles ex. {NORMAL:12, HEADING1:20, TITLE:28, SUBTITLE:16}
+ * @param {Object} carteCouleurs ex. {HEADING1:"#FF0000"}
  * @param {Object} optionsGlobales { inclureEnTetesPieds: boolean, fontFamily: string, lineSpacing: string }
  */
-function appliquerTaillesStyles(carteTailles, optionsGlobales) {
+function appliquerTaillesStyles(carteTailles, carteCouleurs, optionsGlobales) {
     const documentActif = DocumentApp.getActiveDocument();
 
     // Valider les tailles en entrée (sécurité basique)
@@ -58,24 +59,26 @@ function appliquerTaillesStyles(carteTailles, optionsGlobales) {
         if (Number.isFinite(nombre) && nombre >= 6 && nombre <= 96) taillesNettoyees[clef] = nombre;
     });
 
+    const couleursNettoyees = carteCouleurs || {};
+
     if (typeof optionsGlobales === 'boolean') {
         optionsGlobales = { inclureEnTetesPieds: optionsGlobales };
     }
     optionsGlobales = optionsGlobales || {};
 
     // Appliquer au corps du document
-    parcourirEtRedimensionner_(documentActif.getBody(), taillesNettoyees, optionsGlobales);
+    parcourirEtRedimensionner_(documentActif.getBody(), taillesNettoyees, couleursNettoyees, optionsGlobales);
 
     // Appliquer optionnellement aux en-têtes et pieds de page (s'ils existent)
     if (optionsGlobales.inclureEnTetesPieds) {
         const enTete = documentActif.getHeader();
         const piedDePage = documentActif.getFooter();
-        if (enTete) parcourirEtRedimensionner_(enTete, taillesNettoyees, optionsGlobales);
-        if (piedDePage) parcourirEtRedimensionner_(piedDePage, taillesNettoyees, optionsGlobales);
+        if (enTete) parcourirEtRedimensionner_(enTete, taillesNettoyees, couleursNettoyees, optionsGlobales);
+        if (piedDePage) parcourirEtRedimensionner_(piedDePage, taillesNettoyees, couleursNettoyees, optionsGlobales);
     }
 }
 
-function parcourirEtRedimensionner_(conteneur, carteTailles, optionsGlobales) {
+function parcourirEtRedimensionner_(conteneur, carteTailles, carteCouleurs, optionsGlobales) {
     if (!conteneur || !conteneur.getNumChildren) return;
 
     for (let i = 0; i < conteneur.getNumChildren(); i++) {
@@ -83,12 +86,12 @@ function parcourirEtRedimensionner_(conteneur, carteTailles, optionsGlobales) {
         const typeEnfant = enfant.getType();
 
         if (typeEnfant === DocumentApp.ElementType.PARAGRAPH) {
-            redimensionnerParagraphe_(enfant.asParagraph(), carteTailles, optionsGlobales);
+            redimensionnerParagraphe_(enfant.asParagraph(), carteTailles, carteCouleurs, optionsGlobales);
             continue;
         }
 
         if (typeEnfant === DocumentApp.ElementType.LIST_ITEM) {
-            redimensionnerElementListe_(enfant.asListItem(), carteTailles, optionsGlobales);
+            redimensionnerElementListe_(enfant.asListItem(), carteTailles, carteCouleurs, optionsGlobales);
             continue;
         }
 
@@ -97,22 +100,23 @@ function parcourirEtRedimensionner_(conteneur, carteTailles, optionsGlobales) {
             for (let r = 0; r < tableau.getNumRows(); r++) {
                 const ligne = tableau.getRow(r);
                 for (let c = 0; c < ligne.getNumCells(); c++) {
-                    parcourirEtRedimensionner_(ligne.getCell(c), carteTailles, optionsGlobales);
+                    parcourirEtRedimensionner_(ligne.getCell(c), carteTailles, carteCouleurs, optionsGlobales);
                 }
             }
             continue;
         }
 
         if (enfant.getNumChildren) {
-            parcourirEtRedimensionner_(enfant, carteTailles, optionsGlobales);
+            parcourirEtRedimensionner_(enfant, carteTailles, carteCouleurs, optionsGlobales);
         }
     }
 }
 
-function redimensionnerParagraphe_(paragraphe, carteTailles, optionsGlobales) {
+function redimensionnerParagraphe_(paragraphe, carteTailles, carteCouleurs, optionsGlobales) {
     const titre = paragraphe.getHeading(); // DocumentApp.ParagraphHeading
     const clef = clefTitre_(titre);
     const taille = carteTailles[clef];
+    const couleur = carteCouleurs[clef];
 
     if (optionsGlobales.lineSpacing) {
         paragraphe.setLineSpacing(Number(optionsGlobales.lineSpacing));
@@ -122,6 +126,10 @@ function redimensionnerParagraphe_(paragraphe, carteTailles, optionsGlobales) {
     if (texte) {
         if (optionsGlobales.fontFamily) {
             texte.setFontFamily(optionsGlobales.fontFamily);
+        }
+
+        if (couleur) {
+            texte.setForegroundColor(couleur);
         }
 
         if (taille) {
@@ -135,10 +143,11 @@ function redimensionnerParagraphe_(paragraphe, carteTailles, optionsGlobales) {
     }
 }
 
-function redimensionnerElementListe_(elementListe, carteTailles, optionsGlobales) {
+function redimensionnerElementListe_(elementListe, carteTailles, carteCouleurs, optionsGlobales) {
     const titre = elementListe.getHeading();
     const clef = clefTitre_(titre);
     const taille = carteTailles[clef] || carteTailles.NORMAL; // repli sur NORMAL pour les listes
+    const couleur = carteCouleurs[clef] || carteCouleurs.NORMAL;
 
     if (optionsGlobales.lineSpacing) {
         elementListe.setLineSpacing(Number(optionsGlobales.lineSpacing));
@@ -148,6 +157,10 @@ function redimensionnerElementListe_(elementListe, carteTailles, optionsGlobales
     if (texte) {
         if (optionsGlobales.fontFamily) {
             texte.setFontFamily(optionsGlobales.fontFamily);
+        }
+
+        if (couleur) {
+            texte.setForegroundColor(couleur);
         }
 
         if (taille) {

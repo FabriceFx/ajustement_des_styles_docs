@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+      :root {
+        --primary: #0b57d0;
+        --primary-hover: #0842a0;
+        --surface: #ffffff;
+        --surface-variant: #f3f6fc;
+        --text-main: #1f1f1f;
+        --text-secondary: #444746;
+        --border: #c7c7c7;
+        --border-focus: #0b57d0;
+        --radius: 8px;
+        --shadow: 0 1px 3px rgba(0,0,0,0.1);
+      }
+
+      body { 
+        font-family: 'Inter', sans-serif; 
+        padding: 16px; 
+        color: var(--text-main);
+        background-color: #f9f9fd;
+        margin: 0;
+      }
+
+      h3 {
+        margin: 0 0 16px;
+        font-weight: 600;
+        font-size: 18px;
+        color: #1a73e8;
+      }
+
+      .card {
+        background: var(--surface);
+        padding: 16px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        margin-bottom: 16px;
+      }
+
+      .row { 
+        display: flex; 
+        justify-content: space-between; 
+        align-items: center; 
+        margin-bottom: 12px; 
+      }
+      .row:last-child {
+        margin-bottom: 0;
+      }
+
+      label { 
+        font-size: 13px; 
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      input[type="number"] { 
+        width: 60px; 
+        padding: 8px 12px; 
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: inherit;
+        font-size: 14px;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        text-align: center;
+      }
+      
+      input[type="number"]:focus {
+        outline: none;
+        border-color: var(--border-focus);
+        box-shadow: 0 0 0 2px rgba(11, 87, 208, 0.2);
+      }
+
+      .checkbox-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        cursor: pointer;
+      }
+
+      .checkbox-row input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        cursor: pointer;
+        accent-color: var(--primary);
+      }
+
+      .actions { 
+        margin-top: 20px; 
+        display: flex; 
+        gap: 12px; 
+        flex-direction: column;
+      }
+
+      button { 
+        padding: 10px 16px; 
+        border-radius: 20px;
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer; 
+        transition: background-color 0.2s, transform 0.1s;
+        border: none;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+      }
+
+      button:active {
+        transform: scale(0.98);
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+      .btn-primary:hover {
+        background-color: var(--primary-hover);
+        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+      }
+
+      .btn-secondary {
+        background-color: white;
+        color: var(--primary);
+        border: 1px solid var(--border);
+      }
+      .btn-secondary:hover {
+        background-color: var(--surface-variant);
+      }
+
+      .note { 
+        font-size: 12px; 
+        color: var(--text-secondary);
+        margin-top: 16px; 
+        line-height: 1.5; 
+        background: #eef2fa;
+        padding: 12px;
+        border-radius: 6px;
+        border-left: 4px solid #1a73e8;
+      }
+
+      .status-container {
+        min-height: 40px;
+        margin-top: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .status { 
+        font-size: 13px; 
+        font-weight: 500;
+        text-align: center;
+        color: var(--primary);
+      }
+
+      /* Spinner */
+      .spinner {
+        display: none;
+        width: 16px;
+        height: 16px;
+        border: 2px solid rgba(255,255,255,0.3);
+        border-radius: 50%;
+        border-top-color: #fff;
+        animation: spin 0.8s ease-in-out infinite;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+
+      /* Loader overlay */
+      #loadingOverlay {
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(255,255,255,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+      }
+      .overlay-spinner {
+        width: 30px;
+        height: 30px;
+        border: 3px solid rgba(11, 87, 208, 0.2);
+        border-top-color: var(--primary);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+    </style>
+  </head>
+  <body>
+    
+    <div id="loadingOverlay">
+      <div class="overlay-spinner"></div>
+    </div>
+
+    <h3>Ajustement des styles</h3>
+
+    <div class="card">
+      <div class="row"><label>Titre</label><input id="TITLE" type="number" min="6" max="96" value="28"></div>
+      <div class="row"><label>Sous-titre</label><input id="SUBTITLE" type="number" min="6" max="96" value="16"></div>
+      <div class="row"><label>Titre 1</label><input id="HEADING1" type="number" min="6" max="96" value="20"></div>
+      <div class="row"><label>Titre 2</label><input id="HEADING2" type="number" min="6" max="96" value="16"></div>
+      <div class="row"><label>Titre 3</label><input id="HEADING3" type="number" min="6" max="96" value="14"></div>
+      <div class="row"><label>Titre 4</label><input id="HEADING4" type="number" min="6" max="96" value="13"></div>
+      <div class="row"><label>Titre 5</label><input id="HEADING5" type="number" min="6" max="96" value="12"></div>
+      <div class="row"><label>Titre 6</label><input id="HEADING6" type="number" min="6" max="96" value="12"></div>
+      <div class="row"><label>Texte normal</label><input id="NORMAL" type="number" min="6" max="96" value="12"></div>
+
+      <label class="checkbox-row">
+        <input id="inclureEnTetesPieds" type="checkbox">
+        Inclure l'en-tête et le pied de page
+      </label>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" onclick="appliquer()" id="btnAppliquer">
+        <span class="spinner" id="indicateurChargement"></span>
+        <span id="texteBouton">Appliquer les tailles</span>
+      </button>
+      <button class="btn-secondary" onclick="definirValeursParDefaut()">Réinitialiser par défaut</button>
+    </div>
+
+    <div class="note">
+      <strong>Astuce :</strong> ces tailles correspondent aux tailles de police Google Docs standard. Cela met à jour le texte dans les paragraphes, listes et tableaux.
+    </div>
+
+    <div class="status-container">
+      <div id="statut" class="status"></div>
+    </div>
+
+    <script>
+      const clefs = ["TITLE","SUBTITLE","HEADING1","HEADING2","HEADING3","HEADING4","HEADING5","HEADING6","NORMAL"];
+      const valeursParDefaut = {
+        TITLE: 28, SUBTITLE: 16,
+        HEADING1: 20, HEADING2: 16, HEADING3: 14, HEADING4: 13, HEADING5: 12, HEADING6: 12,
+        NORMAL: 12
+      };
+
+      // Au chargement, on essaie de récupérer les préférences
+      window.onload = function() {
+        google.script.run
+          .withSuccessHandler(function(preferences) {
+            document.getElementById('loadingOverlay').style.display = 'none';
+            if (preferences) {
+              clefs.forEach(clef => {
+                if(preferences[clef]) document.getElementById(clef).value = preferences[clef];
+              });
+              if(preferences.inclureEnTetesPieds !== undefined) {
+                document.getElementById('inclureEnTetesPieds').checked = preferences.inclureEnTetesPieds;
+              }
+            }
+          })
+          .withFailureHandler(function() {
+             document.getElementById('loadingOverlay').style.display = 'none';
+          })
+          .recupererPreferencesUtilisateur();
+      };
+
+      function definirValeursParDefaut() {
+        clefs.forEach(clef => document.getElementById(clef).value = valeursParDefaut[clef]);
+        document.getElementById("inclureEnTetesPieds").checked = false;
+        definirStatut("Valeurs par défaut restaurées.");
+      }
+
+      function appliquer() {
+        const carte = {};
+        clefs.forEach(clef => carte[clef] = Number(document.getElementById(clef).value));
+        const inclureEnTetesPieds = document.getElementById("inclureEnTetesPieds").checked;
+
+        // Préparer l'objet des préférences à sauvegarder
+        const preferencesASauvegarder = { ...carte, inclureEnTetesPieds: inclureEnTetesPieds };
+
+        // Retour visuel
+        const bouton = document.getElementById("btnAppliquer");
+        const indicateur = document.getElementById("indicateurChargement");
+        const texte = document.getElementById("texteBouton");
+        
+        bouton.disabled = true;
+        indicateur.style.display = 'inline-block';
+        texte.textContent = 'En cours...';
+        definirStatut("");
+
+        // Sauvegarde des préférences puis application
+        google.script.run
+          .withSuccessHandler(() => {
+            // Une fois sauvegardé, on applique les styles
+            google.script.run
+              .withSuccessHandler(() => {
+                reinitialiserBouton();
+                definirStatut("✅ Terminé ! Les styles ont été mis à jour.");
+              })
+              .withFailureHandler(erreur => {
+                reinitialiserBouton();
+                definirStatut("❌ Erreur : " + (erreur && erreur.message ? erreur.message : erreur));
+              })
+              .appliquerTaillesStyles(carte, inclureEnTetesPieds);
+          })
+          .withFailureHandler(erreur => {
+             reinitialiserBouton();
+             definirStatut("❌ Erreur lors de la sauvegarde des préférences.");
+          })
+          .sauvegarderPreferencesUtilisateur(preferencesASauvegarder);
+      }
+
+      function reinitialiserBouton() {
+        document.getElementById("btnAppliquer").disabled = false;
+        document.getElementById("indicateurChargement").style.display = 'none';
+        document.getElementById("texteBouton").textContent = 'Appliquer les tailles';
+      }
+
+      function definirStatut(message) {
+        const divStatut = document.getElementById("statut");
+        divStatut.textContent = message;
+        // Effacer le message de succès après 5 secondes
+        if(message.includes('✅')) {
+           setTimeout(() => { if(divStatut.textContent === message) divStatut.textContent = ''; }, 5000);
+        }
+      }
+    </script>
+  </body>
+</html>

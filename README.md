@@ -6,6 +6,8 @@ Développé par **Fabrice Faucheux**.
 
 ## 🌟 Fonctionnalités
 
+![Aperçu de l'interface](Ajustement_style.png)
+
 - **Interface Moderne** : Panneau latéral interactif basé sur les principes du Material Design 3.
 - **Application Globale** : Redimensionne les textes dans le corps du document, ainsi que dans les listes et les tableaux.
 - **En-têtes et Pieds de page** : Option pour inclure ou exclure les en-têtes et les pieds de page lors du redimensionnement.

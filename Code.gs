@@ -8,11 +8,13 @@
  * Ce script ajoute un menu personnalisé et un panneau latéral interactif (UI) 
  * permettant de redimensionner rapidement et uniformément toutes les polices 
  * d'un document Google Docs (Texte normal, Titre, Sous-titre, Titres 1 à 6).
+ * Il permet également de modifier la police globale et l'interligne.
  * 
  * Fonctionnalités principales :
  * - Panneau latéral moderne (Material Design) intégré au document.
  * - Sauvegarde automatique des préférences de l'utilisateur (PropertiesService).
  * - Application récursive sur le corps du document, les listes et les tableaux.
+ * - Choix de la police de caractères et de l'interligne.
  * - Option pour inclure/exclure les en-têtes et pieds de page.
  * 
  * Utilisation :
@@ -37,16 +39,16 @@ function afficherBarreLateraleAjustementStyles() {
 }
 
 function definirTexteNormal12Rapide() {
-    appliquerTaillesStyles({ NORMAL: 12 }, false);
+    appliquerTaillesStyles({ NORMAL: 12 }, { inclureEnTetesPieds: false });
 }
 
 /**
- * Applique les tailles dans tout le document en fonction du type de titre du paragraphe.
+ * Applique les tailles, polices et interlignes dans tout le document.
  *
  * @param {Object} carteTailles ex. {NORMAL:12, HEADING1:20, TITLE:28, SUBTITLE:16}
- * @param {boolean} inclureEnTetesPiedsDePage s'il faut appliquer les changements aux en-têtes/pieds de page aussi
+ * @param {Object} optionsGlobales { inclureEnTetesPieds: boolean, fontFamily: string, lineSpacing: string }
  */
-function appliquerTaillesStyles(carteTailles, inclureEnTetesPiedsDePage) {
+function appliquerTaillesStyles(carteTailles, optionsGlobales) {
     const documentActif = DocumentApp.getActiveDocument();
 
     // Valider les tailles en entrée (sécurité basique)
@@ -56,19 +58,24 @@ function appliquerTaillesStyles(carteTailles, inclureEnTetesPiedsDePage) {
         if (Number.isFinite(nombre) && nombre >= 6 && nombre <= 96) taillesNettoyees[clef] = nombre;
     });
 
+    if (typeof optionsGlobales === 'boolean') {
+        optionsGlobales = { inclureEnTetesPieds: optionsGlobales };
+    }
+    optionsGlobales = optionsGlobales || {};
+
     // Appliquer au corps du document
-    parcourirEtRedimensionner_(documentActif.getBody(), taillesNettoyees);
+    parcourirEtRedimensionner_(documentActif.getBody(), taillesNettoyees, optionsGlobales);
 
     // Appliquer optionnellement aux en-têtes et pieds de page (s'ils existent)
-    if (inclureEnTetesPiedsDePage) {
+    if (optionsGlobales.inclureEnTetesPieds) {
         const enTete = documentActif.getHeader();
         const piedDePage = documentActif.getFooter();
-        if (enTete) parcourirEtRedimensionner_(enTete, taillesNettoyees);
-        if (piedDePage) parcourirEtRedimensionner_(piedDePage, taillesNettoyees);
+        if (enTete) parcourirEtRedimensionner_(enTete, taillesNettoyees, optionsGlobales);
+        if (piedDePage) parcourirEtRedimensionner_(piedDePage, taillesNettoyees, optionsGlobales);
     }
 }
 
-function parcourirEtRedimensionner_(conteneur, carteTailles) {
+function parcourirEtRedimensionner_(conteneur, carteTailles, optionsGlobales) {
     if (!conteneur || !conteneur.getNumChildren) return;
 
     for (let i = 0; i < conteneur.getNumChildren(); i++) {
@@ -76,12 +83,12 @@ function parcourirEtRedimensionner_(conteneur, carteTailles) {
         const typeEnfant = enfant.getType();
 
         if (typeEnfant === DocumentApp.ElementType.PARAGRAPH) {
-            redimensionnerParagraphe_(enfant.asParagraph(), carteTailles);
+            redimensionnerParagraphe_(enfant.asParagraph(), carteTailles, optionsGlobales);
             continue;
         }
 
         if (typeEnfant === DocumentApp.ElementType.LIST_ITEM) {
-            redimensionnerElementListe_(enfant.asListItem(), carteTailles);
+            redimensionnerElementListe_(enfant.asListItem(), carteTailles, optionsGlobales);
             continue;
         }
 
@@ -90,50 +97,66 @@ function parcourirEtRedimensionner_(conteneur, carteTailles) {
             for (let r = 0; r < tableau.getNumRows(); r++) {
                 const ligne = tableau.getRow(r);
                 for (let c = 0; c < ligne.getNumCells(); c++) {
-                    parcourirEtRedimensionner_(ligne.getCell(c), carteTailles);
+                    parcourirEtRedimensionner_(ligne.getCell(c), carteTailles, optionsGlobales);
                 }
             }
             continue;
         }
 
         if (enfant.getNumChildren) {
-            parcourirEtRedimensionner_(enfant, carteTailles);
+            parcourirEtRedimensionner_(enfant, carteTailles, optionsGlobales);
         }
     }
 }
 
-function redimensionnerParagraphe_(paragraphe, carteTailles) {
+function redimensionnerParagraphe_(paragraphe, carteTailles, optionsGlobales) {
     const titre = paragraphe.getHeading(); // DocumentApp.ParagraphHeading
     const clef = clefTitre_(titre);
     const taille = carteTailles[clef];
 
-    if (!taille) return;
+    if (optionsGlobales.lineSpacing) {
+        paragraphe.setLineSpacing(Number(optionsGlobales.lineSpacing));
+    }
 
     const texte = paragraphe.editAsText();
     if (texte) {
-        // Sécurité pour les paragraphes vides
-        if (texte.getText().length === 0) {
-            try { texte.setFontSize(taille); } catch (erreur) {}
-        } else {
-            texte.setFontSize(taille);
+        if (optionsGlobales.fontFamily) {
+            texte.setFontFamily(optionsGlobales.fontFamily);
+        }
+
+        if (taille) {
+            // Sécurité pour les paragraphes vides
+            if (texte.getText().length === 0) {
+                try { texte.setFontSize(taille); } catch (erreur) {}
+            } else {
+                texte.setFontSize(taille);
+            }
         }
     }
 }
 
-function redimensionnerElementListe_(elementListe, carteTailles) {
+function redimensionnerElementListe_(elementListe, carteTailles, optionsGlobales) {
     const titre = elementListe.getHeading();
     const clef = clefTitre_(titre);
     const taille = carteTailles[clef] || carteTailles.NORMAL; // repli sur NORMAL pour les listes
 
-    if (!taille) return;
+    if (optionsGlobales.lineSpacing) {
+        elementListe.setLineSpacing(Number(optionsGlobales.lineSpacing));
+    }
 
     const texte = elementListe.editAsText();
     if (texte) {
-        // Sécurité pour les éléments de liste vides
-        if (texte.getText().length === 0) {
-            try { texte.setFontSize(taille); } catch (erreur) {}
-        } else {
-            texte.setFontSize(taille);
+        if (optionsGlobales.fontFamily) {
+            texte.setFontFamily(optionsGlobales.fontFamily);
+        }
+
+        if (taille) {
+            // Sécurité pour les éléments de liste vides
+            if (texte.getText().length === 0) {
+                try { texte.setFontSize(taille); } catch (erreur) {}
+            } else {
+                texte.setFontSize(taille);
+            }
         }
     }
 }

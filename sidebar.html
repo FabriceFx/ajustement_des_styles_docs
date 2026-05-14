@@ -1,581 +1,607 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <base target="_top">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-      :root {
-        --primary: #0b57d0;
-        --primary-hover: #0842a0;
-        --surface: #ffffff;
-        --surface-variant: #f3f6fc;
-        --text-main: #1f1f1f;
-        --text-secondary: #444746;
-        --border: #c7c7c7;
-        --border-focus: #0b57d0;
-        --radius: 8px;
-        --shadow: 0 1px 3px rgba(0,0,0,0.1);
-      }
 
-      body { 
-        font-family: 'Inter', sans-serif; 
-        padding: 16px; 
-        color: var(--text-main);
-        background-color: #f9f9fd;
-        margin: 0;
-      }
+<head>
+  <base target="_top">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0b57d0;
+      --primary-hover: #0842a0;
+      --surface: #ffffff;
+      --surface-variant: #f3f6fc;
+      --text-main: #1f1f1f;
+      --text-secondary: #444746;
+      --border: #c7c7c7;
+      --border-focus: #0b57d0;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
 
-      .card {
-        background: var(--surface);
-        padding: 16px;
-        border-radius: var(--radius);
-        box-shadow: var(--shadow);
-        margin-bottom: 16px;
-      }
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 16px;
+      color: var(--text-main);
+      background-color: #f9f9fd;
+      margin: 0;
+    }
 
-      .card-title {
-        font-weight: 600;
-        font-size: 14px;
-        margin-bottom: 16px;
-        color: var(--primary);
-        text-transform: uppercase;
-        letter-spacing: 0.5px;
-      }
+    .card {
+      background: var(--surface);
+      padding: 16px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      margin-bottom: 16px;
+    }
 
-      .row { 
-        display: flex; 
-        justify-content: space-between; 
-        align-items: center; 
-        margin-bottom: 10px; 
-      }
-      .row:last-child {
-        margin-bottom: 0;
-      }
+    .card-title {
+      font-weight: 600;
+      font-size: 14px;
+      margin-bottom: 16px;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-      .controls {
-        display: flex;
-        gap: 6px;
-        align-items: center;
-      }
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
 
-      label { 
-        font-size: 13px; 
-        font-weight: 500;
-        color: var(--text-secondary);
-        width: 85px;
-        flex-shrink: 0;
-      }
+    .row:last-child {
+      margin-bottom: 0;
+    }
 
-      input[type="number"] { 
-        width: 50px; 
-        padding: 6px 8px; 
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        font-family: inherit;
-        font-size: 13px;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        text-align: center;
-      }
-      
-      input[type="color"] {
-        width: 26px;
-        height: 28px;
-        padding: 0;
-        border: 1px solid var(--border);
-        border-radius: 4px;
-        cursor: pointer;
-        background: white;
-      }
-      
-      input[type="color"]:disabled {
-        opacity: 0.3;
-        cursor: not-allowed;
-      }
+    .controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
 
-      input[type="number"]:focus, select.select-style:focus {
-        outline: none;
-        border-color: var(--border-focus);
-        box-shadow: 0 0 0 2px rgba(11, 87, 208, 0.2);
-      }
+    label {
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text-secondary);
+      width: 85px;
+      flex-shrink: 0;
+    }
 
-      select.select-style {
-        width: 130px;
-        padding: 8px;
-        border: 1px solid var(--border);
-        border-radius: 6px;
-        font-family: inherit;
-        font-size: 13px;
-        transition: border-color 0.2s, box-shadow 0.2s;
-        background-color: white;
-        cursor: pointer;
-      }
+    input[type="number"] {
+      width: 50px;
+      padding: 6px 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      text-align: center;
+    }
 
-      .checkbox-color {
-        width: 14px;
-        height: 14px;
-        cursor: pointer;
-        accent-color: var(--primary);
-        margin: 0;
-      }
+    input[type="color"] {
+      width: 26px;
+      height: 28px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      cursor: pointer;
+      background: white;
+    }
 
-      .checkbox-row {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        margin-top: 16px;
-        cursor: pointer;
-      }
+    input[type="color"]:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
 
-      .checkbox-row input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        cursor: pointer;
-        accent-color: var(--primary);
-      }
+    input[type="number"]:focus,
+    select.select-style:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(11, 87, 208, 0.2);
+    }
 
-      .actions { 
-        margin-top: 20px; 
-        display: flex; 
-        gap: 12px; 
-        flex-direction: column;
-      }
+    select.select-style {
+      width: 130px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 13px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      background-color: white;
+      cursor: pointer;
+    }
 
-      button { 
-        padding: 10px 16px; 
-        border-radius: 20px;
-        font-family: inherit;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer; 
-        transition: background-color 0.2s, transform 0.1s;
-        border: none;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 8px;
-      }
+    .checkbox-color {
+      width: 14px;
+      height: 14px;
+      cursor: pointer;
+      accent-color: var(--primary);
+      margin: 0;
+    }
 
-      button:active {
-        transform: scale(0.98);
-      }
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 16px;
+      cursor: pointer;
+      width: auto;
+    }
 
-      .btn-primary {
-        background-color: var(--primary);
-        color: white;
-      }
-      .btn-primary:hover {
-        background-color: var(--primary-hover);
-        box-shadow: 0 1px 3px rgba(0,0,0,0.2);
-      }
+    .checkbox-row input[type="checkbox"] {
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+      accent-color: var(--primary);
+    }
 
-      .btn-secondary {
-        background-color: white;
-        color: var(--primary);
-        border: 1px solid var(--border);
-      }
-      .btn-secondary:hover {
-        background-color: var(--surface-variant);
-      }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
 
-      .note { 
-        font-size: 12px; 
-        color: var(--text-secondary);
-        margin-top: 16px; 
-        line-height: 1.5; 
-        background: #eef2fa;
-        padding: 12px;
-        border-radius: 6px;
-        border-left: 4px solid #1a73e8;
-      }
+    button {
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: background-color 0.2s, transform 0.1s;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+    }
 
-      .status-container {
-        min-height: 40px;
-        margin-top: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    button:active {
+      transform: scale(0.98);
+    }
 
-      .status { 
-        font-size: 13px; 
-        font-weight: 500;
-        text-align: center;
-        color: var(--primary);
-      }
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+    }
 
-      .dev-footer {
-        text-align: center;
-        font-size: 11px;
-        color: #888888;
-        margin-top: 10px;
-        margin-bottom: 5px;
-        font-weight: 500;
-        letter-spacing: 0.3px;
-      }
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    }
 
-      /* Spinner */
-      .spinner {
-        display: none;
-        width: 16px;
-        height: 16px;
-        border: 2px solid rgba(255,255,255,0.3);
-        border-radius: 50%;
-        border-top-color: #fff;
-        animation: spin 0.8s ease-in-out infinite;
-      }
-      @keyframes spin {
-        to { transform: rotate(360deg); }
-      }
+    .btn-secondary {
+      background-color: white;
+      color: var(--primary);
+      border: 1px solid var(--border);
+    }
 
-      /* Loader overlay */
-      #loadingOverlay {
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: rgba(255,255,255,0.8);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
+    .btn-secondary:hover {
+      background-color: var(--surface-variant);
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-top: 16px;
+      line-height: 1.5;
+      background: #eef2fa;
+      padding: 12px;
+      border-radius: 6px;
+      border-left: 4px solid #1a73e8;
+    }
+
+    .status-container {
+      min-height: 40px;
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .status {
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      color: var(--primary);
+    }
+
+    .dev-footer {
+      text-align: center;
+      font-size: 11px;
+      color: #888888;
+      margin-top: 10px;
+      margin-bottom: 5px;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+    }
+
+    /* Spinner */
+    .spinner {
+      display: none;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 0.8s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
       }
-      .overlay-spinner {
-        width: 30px;
-        height: 30px;
-        border: 3px solid rgba(11, 87, 208, 0.2);
-        border-top-color: var(--primary);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-      }
-    </style>
-  </head>
-  <body>
-    
-    <div id="loadingOverlay">
-      <div class="overlay-spinner"></div>
+    }
+
+    /* Loader overlay */
+    #loadingOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .overlay-spinner {
+      width: 30px;
+      height: 30px;
+      border: 3px solid rgba(11, 87, 208, 0.2);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="loadingOverlay">
+    <div class="overlay-spinner"></div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Options globales</div>
+
+    <div class="row">
+      <label>Police</label>
+      <select id="fontFamily" class="select-style">
+        <option value="">-- Ne pas modifier --</option>
+        <option value="Anton">Anton</option>
+        <option value="Archivo">Archivo</option>
+        <option value="Arial">Arial</option>
+        <option value="Barlow">Barlow</option>
+        <option value="Bebas Neue">Bebas Neue</option>
+        <option value="Calibri">Calibri</option>
+        <option value="Caveat">Caveat</option>
+        <option value="Comfortaa">Comfortaa</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Consolas">Consolas</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Crimson Text">Crimson Text</option>
+        <option value="DM Sans">DM Sans</option>
+        <option value="Dosis">Dosis</option>
+        <option value="EB Garamond">EB Garamond</option>
+        <option value="Figtree">Figtree</option>
+        <option value="Fira Code">Fira Code</option>
+        <option value="Fira Sans">Fira Sans</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Google Sans">Google Sans</option>
+        <option value="Google Sans Flex">Google Sans Flex</option>
+        <option value="Heebo">Heebo</option>
+        <option value="Impact">Impact</option>
+        <option value="Inconsolata">Inconsolata</option>
+        <option value="Inter">Inter</option>
+        <option value="Josefin Sans">Josefin Sans</option>
+        <option value="Karla">Karla</option>
+        <option value="Lexend">Lexend</option>
+        <option value="Libre Baskerville">Libre Baskerville</option>
+        <option value="Lora">Lora</option>
+        <option value="Manrope">Manrope</option>
+        <option value="Merriweather">Merriweather</option>
+        <option value="Montserrat">Montserrat</option>
+        <option value="Mukta">Mukta</option>
+        <option value="Nunito">Nunito</option>
+        <option value="Open Sans">Open Sans</option>
+        <option value="Oswald">Oswald</option>
+        <option value="Outfit">Outfit</option>
+        <option value="Pacifico">Pacifico</option>
+        <option value="Playfair Display">Playfair Display</option>
+        <option value="Poppins">Poppins</option>
+        <option value="PT Sans">PT Sans</option>
+        <option value="Quicksand">Quicksand</option>
+        <option value="Raleway">Raleway</option>
+        <option value="Roboto">Roboto</option>
+        <option value="Roboto Mono">Roboto Mono</option>
+        <option value="Source Sans Pro">Source Sans Pro</option>
+        <option value="Space Grotesk">Space Grotesk</option>
+        <option value="Syne">Syne</option>
+        <option value="Tahoma">Tahoma</option>
+        <option value="Times New Roman">Times New Roman</option>
+        <option value="Titillium Web">Titillium Web</option>
+        <option value="Trebuchet MS">Trebuchet MS</option>
+        <option value="Ubuntu">Ubuntu</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Work Sans">Work Sans</option>
+        <option value="Zilla Slab">Zilla Slab</option>
+      </select>
     </div>
 
-    <div class="card">
-      <div class="card-title">Options globales</div>
-      
-      <div class="row">
-        <label>Police</label>
-        <select id="fontFamily" class="select-style">
-          <option value="">-- Ne pas modifier --</option>
-          <option value="Anton">Anton</option>
-          <option value="Archivo">Archivo</option>
-          <option value="Arial">Arial</option>
-          <option value="Barlow">Barlow</option>
-          <option value="Bebas Neue">Bebas Neue</option>
-          <option value="Calibri">Calibri</option>
-          <option value="Caveat">Caveat</option>
-          <option value="Comfortaa">Comfortaa</option>
-          <option value="Comic Sans MS">Comic Sans MS</option>
-          <option value="Consolas">Consolas</option>
-          <option value="Courier New">Courier New</option>
-          <option value="Crimson Text">Crimson Text</option>
-          <option value="DM Sans">DM Sans</option>
-          <option value="Dosis">Dosis</option>
-          <option value="EB Garamond">EB Garamond</option>
-          <option value="Figtree">Figtree</option>
-          <option value="Fira Code">Fira Code</option>
-          <option value="Fira Sans">Fira Sans</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Google Sans">Google Sans</option>
-          <option value="Google Sans Flex">Google Sans Flex</option>
-          <option value="Heebo">Heebo</option>
-          <option value="Impact">Impact</option>
-          <option value="Inconsolata">Inconsolata</option>
-          <option value="Inter">Inter</option>
-          <option value="Josefin Sans">Josefin Sans</option>
-          <option value="Karla">Karla</option>
-          <option value="Lexend">Lexend</option>
-          <option value="Libre Baskerville">Libre Baskerville</option>
-          <option value="Lora">Lora</option>
-          <option value="Manrope">Manrope</option>
-          <option value="Merriweather">Merriweather</option>
-          <option value="Montserrat">Montserrat</option>
-          <option value="Mukta">Mukta</option>
-          <option value="Nunito">Nunito</option>
-          <option value="Open Sans">Open Sans</option>
-          <option value="Oswald">Oswald</option>
-          <option value="Outfit">Outfit</option>
-          <option value="Pacifico">Pacifico</option>
-          <option value="Playfair Display">Playfair Display</option>
-          <option value="Poppins">Poppins</option>
-          <option value="PT Sans">PT Sans</option>
-          <option value="Quicksand">Quicksand</option>
-          <option value="Raleway">Raleway</option>
-          <option value="Roboto">Roboto</option>
-          <option value="Roboto Mono">Roboto Mono</option>
-          <option value="Source Sans Pro">Source Sans Pro</option>
-          <option value="Space Grotesk">Space Grotesk</option>
-          <option value="Syne">Syne</option>
-          <option value="Tahoma">Tahoma</option>
-          <option value="Times New Roman">Times New Roman</option>
-          <option value="Titillium Web">Titillium Web</option>
-          <option value="Trebuchet MS">Trebuchet MS</option>
-          <option value="Ubuntu">Ubuntu</option>
-          <option value="Verdana">Verdana</option>
-          <option value="Work Sans">Work Sans</option>
-          <option value="Zilla Slab">Zilla Slab</option>
-        </select>
-      </div>
-
-      <div class="row">
-        <label>Interligne</label>
-        <select id="lineSpacing" class="select-style">
-          <option value="">-- Ne pas modifier --</option>
-          <option value="1">Simple (1.0)</option>
-          <option value="1.15">1.15</option>
-          <option value="1.5">1.5</option>
-          <option value="2">Double (2.0)</option>
-        </select>
-      </div>
-      
-      <label class="checkbox-row" style="margin-top: 12px;">
-        <input id="inclureEnTetesPieds" type="checkbox">
-        Inclure en-tête / pied de page
-      </label>
+    <div class="row">
+      <label>Interligne</label>
+      <select id="lineSpacing" class="select-style">
+        <option value="">-- Ne pas modifier --</option>
+        <option value="1">Simple (1.0)</option>
+        <option value="1.15">1.15</option>
+        <option value="1.5">1.5</option>
+        <option value="2">Double (2.0)</option>
+      </select>
     </div>
 
-    <div class="card">
-      <div class="card-title" style="display: flex; justify-content: space-between;">
-        <span>Styles</span>
-        <span style="font-size: 11px; font-weight: normal; color: var(--text-secondary); text-transform: none;">Taille &amp; Couleur</span>
-      </div>
-      
-      <div class="row">
-        <label>Titre</label>
-        <div class="controls">
-          <input id="TITLE" type="number" min="6" max="96" value="28">
-          <input type="checkbox" id="ACT_COLOR_TITLE" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_TITLE').disabled = !this.checked">
-          <input type="color" id="COLOR_TITLE" value="#000000" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Sous-titre</label>
-        <div class="controls">
-          <input id="SUBTITLE" type="number" min="6" max="96" value="16">
-          <input type="checkbox" id="ACT_COLOR_SUBTITLE" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_SUBTITLE').disabled = !this.checked">
-          <input type="color" id="COLOR_SUBTITLE" value="#666666" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 1</label>
-        <div class="controls">
-          <input id="HEADING1" type="number" min="6" max="96" value="20">
-          <input type="checkbox" id="ACT_COLOR_HEADING1" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING1').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING1" value="#000000" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 2</label>
-        <div class="controls">
-          <input id="HEADING2" type="number" min="6" max="96" value="16">
-          <input type="checkbox" id="ACT_COLOR_HEADING2" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING2').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING2" value="#000000" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 3</label>
-        <div class="controls">
-          <input id="HEADING3" type="number" min="6" max="96" value="14">
-          <input type="checkbox" id="ACT_COLOR_HEADING3" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING3').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING3" value="#434343" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 4</label>
-        <div class="controls">
-          <input id="HEADING4" type="number" min="6" max="96" value="13">
-          <input type="checkbox" id="ACT_COLOR_HEADING4" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING4').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING4" value="#666666" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 5</label>
-        <div class="controls">
-          <input id="HEADING5" type="number" min="6" max="96" value="12">
-          <input type="checkbox" id="ACT_COLOR_HEADING5" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING5').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING5" value="#666666" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Titre 6</label>
-        <div class="controls">
-          <input id="HEADING6" type="number" min="6" max="96" value="12">
-          <input type="checkbox" id="ACT_COLOR_HEADING6" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_HEADING6').disabled = !this.checked">
-          <input type="color" id="COLOR_HEADING6" value="#666666" disabled>
-        </div>
-      </div>
-      <div class="row">
-        <label>Texte normal</label>
-        <div class="controls">
-          <input id="NORMAL" type="number" min="6" max="96" value="12">
-          <input type="checkbox" id="ACT_COLOR_NORMAL" class="checkbox-color" title="Modifier la couleur" onchange="document.getElementById('COLOR_NORMAL').disabled = !this.checked">
-          <input type="color" id="COLOR_NORMAL" value="#000000" disabled>
-        </div>
-      </div>
+    <label class="checkbox-row" style="margin-top: 12px;">
+      <input id="inclureEnTetesPieds" type="checkbox">
+      Inclure en-tête / pied de page
+    </label>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="display: flex; justify-content: space-between;">
+      <span>Styles</span>
+      <span style="font-size: 11px; font-weight: normal; color: var(--text-secondary); text-transform: none;">Taille
+        &amp; couleur</span>
     </div>
 
-    <div class="actions">
-      <button class="btn-primary" onclick="appliquer()" id="btnAppliquer">
-        <span class="spinner" id="indicateurChargement"></span>
-        <span id="texteBouton">Appliquer les styles</span>
-      </button>
-      <button class="btn-secondary" onclick="definirValeursParDefaut()">Réinitialiser par défaut</button>
+    <div class="row">
+      <label>Titre</label>
+      <div class="controls">
+        <input id="TITLE" type="number" min="6" max="96" value="28">
+        <input type="checkbox" id="ACT_COLOR_TITLE" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_TITLE').disabled = !this.checked">
+        <input type="color" id="COLOR_TITLE" value="#000000" disabled>
+      </div>
     </div>
-
-    <div class="note">
-      <strong>Astuce :</strong> Cochez la case à côté d'une couleur pour l'appliquer. Laisser une taille vide ou une case décochée préservera le formatage existant.
+    <div class="row">
+      <label>Sous-titre</label>
+      <div class="controls">
+        <input id="SUBTITLE" type="number" min="6" max="96" value="16">
+        <input type="checkbox" id="ACT_COLOR_SUBTITLE" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_SUBTITLE').disabled = !this.checked">
+        <input type="color" id="COLOR_SUBTITLE" value="#666666" disabled>
+      </div>
     </div>
-
-    <div class="status-container">
-      <div id="statut" class="status"></div>
+    <div class="row">
+      <label>Titre 1</label>
+      <div class="controls">
+        <input id="HEADING1" type="number" min="6" max="96" value="20">
+        <input type="checkbox" id="ACT_COLOR_HEADING1" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING1').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING1" value="#000000" disabled>
+      </div>
     </div>
-
-    <div class="dev-footer">
-      &lt;/&gt; par Fabrice Faucheux
+    <div class="row">
+      <label>Titre 2</label>
+      <div class="controls">
+        <input id="HEADING2" type="number" min="6" max="96" value="16">
+        <input type="checkbox" id="ACT_COLOR_HEADING2" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING2').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING2" value="#000000" disabled>
+      </div>
     </div>
+    <div class="row">
+      <label>Titre 3</label>
+      <div class="controls">
+        <input id="HEADING3" type="number" min="6" max="96" value="14">
+        <input type="checkbox" id="ACT_COLOR_HEADING3" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING3').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING3" value="#434343" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <label>Titre 4</label>
+      <div class="controls">
+        <input id="HEADING4" type="number" min="6" max="96" value="13">
+        <input type="checkbox" id="ACT_COLOR_HEADING4" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING4').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING4" value="#666666" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <label>Titre 5</label>
+      <div class="controls">
+        <input id="HEADING5" type="number" min="6" max="96" value="12">
+        <input type="checkbox" id="ACT_COLOR_HEADING5" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING5').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING5" value="#666666" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <label>Titre 6</label>
+      <div class="controls">
+        <input id="HEADING6" type="number" min="6" max="96" value="12">
+        <input type="checkbox" id="ACT_COLOR_HEADING6" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_HEADING6').disabled = !this.checked">
+        <input type="color" id="COLOR_HEADING6" value="#666666" disabled>
+      </div>
+    </div>
+    <div class="row">
+      <label>Texte normal</label>
+      <div class="controls">
+        <input id="NORMAL" type="number" min="6" max="96" value="12">
+        <input type="checkbox" id="ACT_COLOR_NORMAL" class="checkbox-color" title="Modifier la couleur"
+          onchange="document.getElementById('COLOR_NORMAL').disabled = !this.checked">
+        <input type="color" id="COLOR_NORMAL" value="#000000" disabled>
+      </div>
+    </div>
+  </div>
 
-    <script>
-      const clefs = ["TITLE","SUBTITLE","HEADING1","HEADING2","HEADING3","HEADING4","HEADING5","HEADING6","NORMAL"];
-      const valeursParDefaut = {
-        TITLE: 28, SUBTITLE: 16,
-        HEADING1: 20, HEADING2: 16, HEADING3: 14, HEADING4: 13, HEADING5: 12, HEADING6: 12,
-        NORMAL: 12
-      };
-      const couleursParDefaut = {
-        TITLE: "#000000", SUBTITLE: "#666666",
-        HEADING1: "#000000", HEADING2: "#000000", HEADING3: "#434343", HEADING4: "#666666", HEADING5: "#666666", HEADING6: "#666666",
-        NORMAL: "#000000"
-      };
+  <div class="actions">
+    <button class="btn-primary" onclick="appliquer()" id="btnAppliquer">
+      <span class="spinner" id="indicateurChargement"></span>
+      <span id="texteBouton">Appliquer les styles</span>
+    </button>
+    <button class="btn-secondary" onclick="definirValeursParDefaut()">Réinitialiser par défaut</button>
+  </div>
 
-      // Au chargement, on essaie de récupérer les préférences
-      window.onload = function() {
-        google.script.run
-          .withSuccessHandler(function(preferences) {
-            document.getElementById('loadingOverlay').style.display = 'none';
-            if (preferences) {
-              clefs.forEach(clef => {
-                if(preferences[clef]) document.getElementById(clef).value = preferences[clef];
-              });
-              if(preferences.inclureEnTetesPieds !== undefined) {
-                document.getElementById('inclureEnTetesPieds').checked = preferences.inclureEnTetesPieds;
-              }
-              if(preferences.fontFamily) {
-                document.getElementById('fontFamily').value = preferences.fontFamily;
-              }
-              if(preferences.lineSpacing) {
-                document.getElementById('lineSpacing').value = preferences.lineSpacing;
-              }
-              if(preferences.couleursActives) {
-                clefs.forEach(clef => {
-                   if(preferences.couleursActives[clef]) {
-                     document.getElementById('ACT_COLOR_' + clef).checked = true;
-                     document.getElementById('COLOR_' + clef).disabled = false;
-                     document.getElementById('COLOR_' + clef).value = preferences.couleurs[clef];
-                   }
-                });
-              }
+  <div class="note">
+    <strong>Astuce :</strong> Cochez la case à côté d'une couleur pour l'appliquer. Laisser une taille vide ou une case
+    décochée préservera le formatage existant.
+  </div>
+
+  <div class="status-container">
+    <div id="statut" class="status"></div>
+  </div>
+
+  <div class="dev-footer">
+    &lt;/&gt; par Fabrice Faucheux
+  </div>
+
+  <script>
+    const clefs = ["TITLE", "SUBTITLE", "HEADING1", "HEADING2", "HEADING3", "HEADING4", "HEADING5", "HEADING6", "NORMAL"];
+    const valeursParDefaut = {
+      TITLE: 28, SUBTITLE: 16,
+      HEADING1: 20, HEADING2: 16, HEADING3: 14, HEADING4: 13, HEADING5: 12, HEADING6: 12,
+      NORMAL: 12
+    };
+    const couleursParDefaut = {
+      TITLE: "#000000", SUBTITLE: "#666666",
+      HEADING1: "#000000", HEADING2: "#000000", HEADING3: "#434343", HEADING4: "#666666", HEADING5: "#666666", HEADING6: "#666666",
+      NORMAL: "#000000"
+    };
+
+    // Au chargement, on essaie de récupérer les préférences
+    window.onload = function () {
+      google.script.run
+        .withSuccessHandler(function (preferences) {
+          document.getElementById('loadingOverlay').style.display = 'none';
+          if (preferences) {
+            clefs.forEach(clef => {
+              if (preferences[clef]) document.getElementById(clef).value = preferences[clef];
+            });
+            if (preferences.inclureEnTetesPieds !== undefined) {
+              document.getElementById('inclureEnTetesPieds').checked = preferences.inclureEnTetesPieds;
             }
-          })
-          .withFailureHandler(function() {
-             document.getElementById('loadingOverlay').style.display = 'none';
-          })
-          .recupererPreferencesUtilisateur();
+            if (preferences.fontFamily) {
+              document.getElementById('fontFamily').value = preferences.fontFamily;
+            }
+            if (preferences.lineSpacing) {
+              document.getElementById('lineSpacing').value = preferences.lineSpacing;
+            }
+            if (preferences.couleursActives) {
+              clefs.forEach(clef => {
+                if (preferences.couleursActives[clef]) {
+                  document.getElementById('ACT_COLOR_' + clef).checked = true;
+                  document.getElementById('COLOR_' + clef).disabled = false;
+                  document.getElementById('COLOR_' + clef).value = preferences.couleurs[clef];
+                }
+              });
+            }
+          }
+        })
+        .withFailureHandler(function () {
+          document.getElementById('loadingOverlay').style.display = 'none';
+        })
+        .recupererPreferencesUtilisateur();
+    };
+
+    function definirValeursParDefaut() {
+      clefs.forEach(clef => {
+        document.getElementById(clef).value = valeursParDefaut[clef];
+        document.getElementById('ACT_COLOR_' + clef).checked = false;
+        document.getElementById('COLOR_' + clef).disabled = true;
+        document.getElementById('COLOR_' + clef).value = couleursParDefaut[clef];
+      });
+      document.getElementById("inclureEnTetesPieds").checked = false;
+      document.getElementById("fontFamily").value = "";
+      document.getElementById("lineSpacing").value = "";
+      definirStatut("Valeurs par défaut restaurées.");
+    }
+
+    function appliquer() {
+      const carte = {};
+      const carteCouleurs = {};
+      const couleursActives = {};
+
+      clefs.forEach(clef => {
+        carte[clef] = document.getElementById(clef).value ? Number(document.getElementById(clef).value) : "";
+        if (document.getElementById('ACT_COLOR_' + clef).checked) {
+          carteCouleurs[clef] = document.getElementById('COLOR_' + clef).value;
+          couleursActives[clef] = true;
+        } else {
+          couleursActives[clef] = false;
+        }
+      });
+
+      const inclureEnTetesPieds = document.getElementById("inclureEnTetesPieds").checked;
+      const fontFamily = document.getElementById("fontFamily").value;
+      const lineSpacing = document.getElementById("lineSpacing").value;
+
+      // Préparer l'objet des préférences à sauvegarder et options globales
+      const optionsGlobales = {
+        inclureEnTetesPieds: inclureEnTetesPieds,
+        fontFamily: fontFamily,
+        lineSpacing: lineSpacing
+      };
+      const preferencesASauvegarder = {
+        ...carte,
+        ...optionsGlobales,
+        couleurs: carteCouleurs,
+        couleursActives: couleursActives
       };
 
-      function definirValeursParDefaut() {
-        clefs.forEach(clef => {
-            document.getElementById(clef).value = valeursParDefaut[clef];
-            document.getElementById('ACT_COLOR_' + clef).checked = false;
-            document.getElementById('COLOR_' + clef).disabled = true;
-            document.getElementById('COLOR_' + clef).value = couleursParDefaut[clef];
-        });
-        document.getElementById("inclureEnTetesPieds").checked = false;
-        document.getElementById("fontFamily").value = "";
-        document.getElementById("lineSpacing").value = "";
-        definirStatut("Valeurs par défaut restaurées.");
+      // Retour visuel
+      const bouton = document.getElementById("btnAppliquer");
+      const indicateur = document.getElementById("indicateurChargement");
+      const texte = document.getElementById("texteBouton");
+
+      bouton.disabled = true;
+      indicateur.style.display = 'inline-block';
+      texte.textContent = 'En cours...';
+      definirStatut("");
+
+      // Sauvegarde des préférences puis application
+      google.script.run
+        .withSuccessHandler(() => {
+          // Une fois sauvegardé, on applique les styles
+          google.script.run
+            .withSuccessHandler(() => {
+              reinitialiserBouton();
+              definirStatut("✅ Terminé ! Les styles ont été mis à jour.");
+            })
+            .withFailureHandler(erreur => {
+              reinitialiserBouton();
+              definirStatut("❌ Erreur : " + (erreur && erreur.message ? erreur.message : erreur));
+            })
+            .appliquerTaillesStyles(carte, carteCouleurs, optionsGlobales);
+        })
+        .withFailureHandler(erreur => {
+          reinitialiserBouton();
+          definirStatut("❌ Erreur lors de la sauvegarde des préférences.");
+        })
+        .sauvegarderPreferencesUtilisateur(preferencesASauvegarder);
+    }
+
+    function reinitialiserBouton() {
+      document.getElementById("btnAppliquer").disabled = false;
+      document.getElementById("indicateurChargement").style.display = 'none';
+      document.getElementById("texteBouton").textContent = 'Appliquer les styles';
+    }
+
+    function definirStatut(message) {
+      const divStatut = document.getElementById("statut");
+      divStatut.textContent = message;
+      // Effacer le message de succès après 5 secondes
+      if (message.includes('✅')) {
+        setTimeout(() => { if (divStatut.textContent === message) divStatut.textContent = ''; }, 5000);
       }
+    }
+  </script>
+</body>
 
-      function appliquer() {
-        const carte = {};
-        const carteCouleurs = {};
-        const couleursActives = {};
-
-        clefs.forEach(clef => {
-          carte[clef] = document.getElementById(clef).value ? Number(document.getElementById(clef).value) : "";
-          if (document.getElementById('ACT_COLOR_' + clef).checked) {
-             carteCouleurs[clef] = document.getElementById('COLOR_' + clef).value;
-             couleursActives[clef] = true;
-          } else {
-             couleursActives[clef] = false;
-          }
-        });
-        
-        const inclureEnTetesPieds = document.getElementById("inclureEnTetesPieds").checked;
-        const fontFamily = document.getElementById("fontFamily").value;
-        const lineSpacing = document.getElementById("lineSpacing").value;
-
-        // Préparer l'objet des préférences à sauvegarder et options globales
-        const optionsGlobales = { 
-          inclureEnTetesPieds: inclureEnTetesPieds,
-          fontFamily: fontFamily,
-          lineSpacing: lineSpacing
-        };
-        const preferencesASauvegarder = { 
-            ...carte, 
-            ...optionsGlobales,
-            couleurs: carteCouleurs,
-            couleursActives: couleursActives
-        };
-
-        // Retour visuel
-        const bouton = document.getElementById("btnAppliquer");
-        const indicateur = document.getElementById("indicateurChargement");
-        const texte = document.getElementById("texteBouton");
-        
-        bouton.disabled = true;
-        indicateur.style.display = 'inline-block';
-        texte.textContent = 'En cours...';
-        definirStatut("");
-
-        // Sauvegarde des préférences puis application
-        google.script.run
-          .withSuccessHandler(() => {
-            // Une fois sauvegardé, on applique les styles
-            google.script.run
-              .withSuccessHandler(() => {
-                reinitialiserBouton();
-                definirStatut("✅ Terminé ! Les styles ont été mis à jour.");
-              })
-              .withFailureHandler(erreur => {
-                reinitialiserBouton();
-                definirStatut("❌ Erreur : " + (erreur && erreur.message ? erreur.message : erreur));
-              })
-              .appliquerTaillesStyles(carte, carteCouleurs, optionsGlobales);
-          })
-          .withFailureHandler(erreur => {
-             reinitialiserBouton();
-             definirStatut("❌ Erreur lors de la sauvegarde des préférences.");
-          })
-          .sauvegarderPreferencesUtilisateur(preferencesASauvegarder);
-      }
-
-      function reinitialiserBouton() {
-        document.getElementById("btnAppliquer").disabled = false;
-        document.getElementById("indicateurChargement").style.display = 'none';
-        document.getElementById("texteBouton").textContent = 'Appliquer les styles';
-      }
-
-      function definirStatut(message) {
-        const divStatut = document.getElementById("statut");
-        divStatut.textContent = message;
-        // Effacer le message de succès après 5 secondes
-        if(message.includes('✅')) {
-           setTimeout(() => { if(divStatut.textContent === message) divStatut.textContent = ''; }, 5000);
-        }
-      }
-    </script>
-  </body>
 </html>
